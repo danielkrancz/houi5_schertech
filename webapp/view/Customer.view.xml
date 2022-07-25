@@ -1,0 +1,72 @@
+<mvc:View controllerName="at.clouddna.training00.zhoui5.controller.Customer"
+    xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" displayBlock="true" xmlns:f="sap.ui.layout.form"
+    xmlns="sap.m">
+    <Page id="page" title="{i18n>title}">
+        <content>
+        <f:SimpleForm id="SimpleFormChange354"
+			editable="true"
+			layout="ResponsiveGridLayout"
+			title="{i18n>title}"
+			labelSpanXL="2"
+			labelSpanL="3"
+			labelSpanM="4"
+			labelSpanS="12"
+			adjustLabelSpan="false"
+			emptySpanXL="5"
+			emptySpanL="4"
+			emptySpanM="2"
+			emptySpanS="0"
+			columnsXL="1"
+			columnsL="1"
+			columnsM="1"
+			singleContainerFullSize="false" >
+			<f:content>
+				<Label id="app_label_customerid" text="{i18n>app.customerid}" 
+                        labelFor="app_input_customerid"/>
+                <Input id="app_input_customerid" value="1000001"/>
+
+                <Label id="app_label_firstname" text="{i18n>app.firstname}" 
+                        labelFor="app_input_firstname"/>
+                <Input id="app_input_firstname" value="Daniel"/>
+
+                <Label id="app_label_lastname" text="{i18n>app.lastname}" 
+                        labelFor="app_input_lastname"/>
+                <Input id="app_input_lastname" value="Krancz"/>
+
+                <Label id="app_label_title" text="{i18n>app.title}" 
+                        labelFor="app_input_title"/>
+                <Input id="app_input_title" value=""/>
+
+                <Label id="app_label_gender" text="{i18n>app.gender}" 
+                        labelFor="app_input_gender"/>
+                <Select>
+                    <core:Item key="male" text="{i18n>male}"/>
+                    <core:Item key="female" text="{i18n>female}"/>
+				</Select>
+
+                <Label id="app_label_email" text="{i18n>app.email}" 
+                        labelFor="app_input_email"/>
+                <Input id="app_input_email" value="dk@clouddna.at"/>
+
+                <Label id="app_label_phone" text="{i18n>app.phone}" 
+                        labelFor="app_input_phone"/>
+                <Input id="app_input_phone" value="+4367615158954156"/>
+
+                <Label id="app_label_website" text="{i18n>app.website}" 
+                        labelFor="app_input_website"/>
+                <Input id="app_input_website" value="clouddna.at"/>
+			</f:content>
+		</f:SimpleForm>
+
+        <!--
+            <HBox id="app_hbox_customerid">
+                <items>
+                    <Label id="app_label_customerid" text="CustomerId" 
+                        labelFor="app_text_customerid"/>
+                    <Text id="app_text_customerid" text="1000001"/>
+                </items>
+            </HBox>
+        -->
+        </content>
+    </Page>
+</mvc:View>
