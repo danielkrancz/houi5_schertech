@@ -1,0 +1,69 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.ui.layout.form">
+    <f:SimpleForm id="change_form_customer"
+			editable="true"
+			layout="ResponsiveGridLayout"
+			title="{i18n>title}"
+			labelSpanXL="3"
+			labelSpanL="3"
+			labelSpanM="3"
+			labelSpanS="12"
+			adjustLabelSpan="false"
+			emptySpanXL="3"
+			emptySpanL="3"
+			emptySpanM="3"
+			emptySpanS="0"
+			columnsXL="1"
+			columnsL="1"
+			columnsM="1"
+			singleContainerFullSize="false" >
+			<f:content>
+            <!-- 
+                <Label text="Address"/>
+                <Input value="{/address/city/short}"/>
+            -->
+				<Label id="change_label_customerid" text="{i18n>app.customerid}" 
+                        labelFor="change_input_customerid"/>
+                <Input id="change_input_customerid" value="{/customerid}"/>
+
+                <Label id="change_label_firstname" text="{i18n>app.firstname}" 
+                        labelFor="change_input_firstname"/>
+                <Input id="change_input_firstname" value="{/firstname}"/>
+
+                <Label id="change_label_lastname" text="{i18n>app.lastname}" 
+                        labelFor="change_input_lastname"/>
+                <Input id="change_input_lastname" value="{/lastname}"/>
+
+                <Label id="change_label_title" text="{i18n>app.title}" 
+                        labelFor="change_input_title"/>
+                <Input id="change_input_title" value="{/title}"/>
+
+                <Label id="change_label_gender" text="{i18n>app.gender}" 
+                        labelFor="change_input_gender"/>
+                <Select id="change_select_gender" selectedKey="{/gender}" items="{gendersModel>/genders}">
+                    <items>
+                        <core:Item id="change_template_gender_items" key="{gendersModel>}" text="{path: 'gendersModel>', formatter: '.genderFormatter'}"/>
+                    </items>
+				</Select>
+                
+                <!--
+                <Select selectedKey="{/gender}" items="{gendersModel>/flights}">
+                    <items>
+                        <core:Item key="{gendersModel>flightName}" text="{gendersModel>flightName} (Avliable Seats: {= ${gendersModel>maximumSeats} - ${gendersModel>occupiedSeats} })"/>
+                    </items>
+				</Select>
+                -->                
+
+                <Label id="change_label_email" text="{i18n>app.email}" 
+                        labelFor="change_input_email"/>
+                <Input id="change_input_email" value="{/email}"/>
+
+                <Label id="change_label_phone" text="{i18n>app.phone}" 
+                        labelFor="change_input_phone"/>
+                <Input id="change_input_phone" value="{/phone}"/>
+
+                <Label id="change_label_website" text="{i18n>app.website}" 
+                        labelFor="change_input_website"/>
+                <Input id="change_input_website" value="{/website}"/>
+			</f:content>
+		</f:SimpleForm>
+</core:FragmentDefinition>

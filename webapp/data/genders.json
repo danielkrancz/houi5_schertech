@@ -1,0 +1,23 @@
+{
+    "genders": [
+        "female", "male"
+    ],
+
+    "flights": [
+        {
+            "flightName": "VIE-HAM",
+            "occupiedSeats": 20,
+            "maximumSeats": 50
+        },
+        {
+            "flightName": "VIE-NYC",
+            "occupiedSeats": 30,
+            "maximumSeats": 40
+        },
+        {
+            "flightName": "VIE-BRL",
+            "occupiedSeats": 10,
+            "maximumSeats": 50
+        }
+    ]
+}

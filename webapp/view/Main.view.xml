@@ -1,0 +1,86 @@
+<mvc:View controllerName="at.clouddna.training00.zhoui5.controller.Main"
+    xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" displayBlock="true" xmlns:f="sap.ui.layout.form"
+    xmlns="sap.m">
+    <Page id="page" title="{i18n>title}">
+        <content>
+        <!--
+        <Table items="{gendersModel>/flights}" headerText="{i18n>main.tabletitle}" noDataText="{i18n>main.noDataText}">
+
+                <columns>
+                    <Column>
+                        <Text text="Flight"/>
+                    </Column>
+                    <Column>
+                        <Text text="Seats (max)"/>
+                    </Column>
+                    <Column>
+                        <Text text="Seats (occ)"/>
+                    </Column>
+                    <Column>
+                        <Text text="Seats (av)"/>
+                    </Column>
+                </columns>
+
+                <items>
+                    <ColumnListItem highlight="{= (${gendersModel>maximumSeats} - ${gendersModel>occupiedSeats}) > 20 ? 'Success' : 'Warning'}">
+                        <cells>
+                            <Label text="{gendersModel>flightName}" design="Bold"/>
+                            <Text text="{gendersModel>occupiedSeats}"/>
+                            <Text text="{gendersModel>maximumSeats}"/>
+                            <Text text="{= ${gendersModel>maximumSeats} - ${gendersModel>occupiedSeats} }"/>
+                        </cells>    
+                    </ColumnListItem>
+                </items>
+
+            </Table>
+             -->
+            <Table id="main_table_customers" items="{/CustomerSet}" headerText="{i18n>main.tabletitle}" noDataText="{i18n>main.noDataText}" mode="None"
+                delete="onDeletePressed">
+                <columns>
+                    <Column>
+                        <Text text="{i18n>app.customerid}"/>
+                    </Column>
+                    <Column>
+                        <Text text="{i18n>app.firstname}"/>
+                    </Column>
+                    <Column>
+                        <Text text="{i18n>app.lastname}"/>
+                    </Column>
+                    <Column minScreenWidth="Desktop">
+                        <Text text="{i18n>app.title}"/>
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>app.gender}"/>
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>app.email}"/>
+                    </Column>
+                    <Column minScreenWidth="Tablet">
+                        <Text text="{i18n>app.phone}"/>
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>app.website}"/>
+                    </Column>
+                    <Column>
+                        <Text text="{i18n>delete}"/>
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem type="Navigation" press="onListItemPressed">
+                        <cells>
+                            <Text text="{CustomerId}"/>
+                            <Text text="{Firstname}"/>
+                            <Text text="{Lastname}"/>
+                            <Text text="{AcademicTitle}"/>
+                            <Text text="{path: 'Gender', formatter: '.genderFormatter'}"/>
+                            <Link text="{Email}" href="mailto:{Email}"/>
+                            <Text text="{Phone}"/>
+                            <Link text="{Website}" href="https://{Website}" target="_blank"/>
+                            <Button icon="sap-icon://delete" press="onDeleteButtonPressed" type="Reject"/>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+    </Page>
+</mvc:View>
