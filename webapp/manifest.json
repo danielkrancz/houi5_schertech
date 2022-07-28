@@ -23,7 +23,25 @@
           "odataVersion": "2.0",
           "localUri": "localService/metadata.xml"
         }
-      }
+      },
+      "ZHOUI5_CDS": {
+        "uri": "/sap/opu/odata/sap/ZHOUI5_CDS/",
+        "type": "OData",
+        "settings": {
+            "annotations": [
+                "ZHOUI5_CDS_VAN"
+            ],
+          "odataVersion": "2.0",
+          "localUri": "localService/metadata.xml"
+        }
+      },
+      "ZHOUI5_CDS_VAN": {
+        "uri": "/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Annotations(TechnicalName='ZHOUI5_CDS_VAN',Version='0001')/$value/",
+        "type": "ODataAnnotation",
+        "settings": {
+            "localUri": "localService/ZHOUI5_CDS_VAN.xml"
+            }
+        }
     }
   },
   "sap.ui": {
@@ -75,7 +93,16 @@
           "defaultBindingMode": "TwoWay",
           "defaultCountMode": "Inline",
           "refreshAfterChange": true,
-          "useBatch": false
+          "useBatch": true
+        }
+      },
+      "cdsModel": {
+        "dataSource": "ZHOUI5_CDS",
+        "preload": true,
+        "settings": {
+          "defaultBindingMode": "TwoWay",
+          "defaultCountMode": "Inline",
+          "refreshAfterChange": false
         }
       },
       "gendersModel": {
@@ -113,6 +140,13 @@
           "pattern": "",
           "target": [
             "Main"
+          ]
+        },
+        {
+          "name": "CreateCustomer",
+          "pattern": "create",
+          "target": [
+            "Customer"
           ]
         }
       ],

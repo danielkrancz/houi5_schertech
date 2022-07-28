@@ -15,7 +15,7 @@
 			columnsXL="1"
 			columnsL="1"
 			columnsM="1"
-			singleContainerFullSize="false" >
+			singleContainerFullSize="false">
 			<f:content>
             <!-- 
                 <Label text="Address"/>
@@ -39,7 +39,7 @@
 
                 <Label id="display_label_gender" text="{i18n>app.gender}" 
                         labelFor="display_text_gender"/>
-                <Text id="display_text_gender" text="{path: 'Gender', formatter: '.genderFormatter'}"/>
+                <Text id="display_text_gender" text="{path: 'Gender', formatter: '.formatter.genderFormatter'}"/>
                 
                 <Label id="display_label_email" text="{i18n>app.email}" 
                         labelFor="display_text_email"/>

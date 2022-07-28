@@ -1,31 +1,23 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller",
+    "at/clouddna/training00/zhoui5/controller/BaseController",
     "sap/m/MessageBox",
-    "sap/m/MessageToast"
+    "sap/m/MessageToast",
+    "at/clouddna/training00/zhoui5/controller/formatter/HOUI5Formatter"
 ],
 
-    function (Controller, MessageBox, MessageToast) {
+    function (BaseController, MessageBox, MessageToast, HOUI5Formatter) {
         "use strict";
 
-        return Controller.extend("at.clouddna.training00.zhoui5.controller.Main", {
+        return BaseController.extend("at.clouddna.training00.zhoui5.controller.Main", {
+
+            formatter: HOUI5Formatter,
 
             onInit: function () {
+                this.setContentDensity();
 
-            },
-
-            genderFormatter: function(sGender) {
-                let oView = this.getView();
-                let oI18nModel = oView.getModel("i18n");
-                let oResourceBundle = oI18nModel.getResourceBundle();
-
-                switch(sGender){
-                    case "0":
-                        return oResourceBundle.getText("female");
-                    case "1":
-                        return oResourceBundle.getText("male");
-                    default:
-                        return "?";
-                }
+                let oModel = this.getOwnerComponent().getModel("cdsModel");
+                //this.getView().setModel(oModel);
+                //this.getView().byId("main_smarttable_customers").rebindTable();
             },
 
             onDeletePressed: function(oEvent){
@@ -39,31 +31,31 @@ sap.ui.define([
             },
 
             _delete: function(sPath){
-                let oTable = this.getView().byId("main_table_customers");
+                let oTable = this.getView().byId("main_smarttable_customers");
 
                 oTable.setBusy(true);
 
-                //let sPath = oEvent.getSource().getBindingContext().getPath();
-                let oODataModel = this.getView().getModel();
-                let oView = this.getView();
-                let oI18nModel = oView.getModel("i18n");
-                let oResourceBundle = oI18nModel.getResourceBundle();
+                let oODataModel = this.getOwnerComponent().getModel();//this.getView().getModel();
+                
+                sPath = oODataModel.createKey("/CustomerSet", {
+                    CustomerId: sPath.split("'")[1]
+                });
 
-                MessageBox.warning(oResourceBundle.getText("deleteQuestion"), {
-                    title: oResourceBundle.getText("deleteTitle"),
+                MessageBox.warning(this.getLocalizedText("deleteQuestion"), {
+                    title: this.getLocalizedText("deleteTitle"),
                     actions: [MessageBox.Action.YES, MessageBox.Action.NO],
                     emphasizedAction: MessageBox.Action.YES,
-                    onClose: function(sAction){
+                    onClose: (sAction) => {
                         if(MessageBox.Action.YES === sAction){
                             oODataModel.remove(sPath, {
-                                success: function(){
-                                    MessageToast.show(oResourceBundle.getText("successfullyDeleted"));
+                                success: () => {
+                                    MessageToast.show(this.getLocalizedText("successfullyDeleted"));
                                     oTable.setBusy(false);
-                                    //oODataModel.refresh();
+                                    this.getModel().refresh();
                                 },
-                                error: function(oError){
+                                error: (oError) => {
                                     //MessageBox.error();
-                                    MessageToast.show(oResourceBundle.getText("errorAtDeleted"));
+                                    MessageToast.show(this.getLocalizedText("errorAtDeleted"));
                                     oTable.setBusy(false);
                                 }
                             });
@@ -74,25 +66,16 @@ sap.ui.define([
                 });
             },
 
-            onAfterRendering: function(){
-
-                /*
-                let oODataModel = this.getView().getModel();
-
-                oODataModel.read("/CustomerSet", {
-                    success: function(oResult){
-                        debugger;
-                    }
-                });
-                */
-            },
-
             onListItemPressed: function(oEvent){
                 let sPath = oEvent.getSource().getBindingContext().getPath();
-                let oRouter = this.getOwnerComponent().getRouter();
-                oRouter.navTo("RouteCustomer", {
-                    path: sPath.split("/")[1]
+
+                this.getRouter().navTo("RouteCustomer", {
+                    path: sPath.split("'")[1]
                 });
+            },
+
+            onAddCustomer: function(){
+                this.getRouter().navTo("CreateCustomer", {}, true);
             }
 
         });

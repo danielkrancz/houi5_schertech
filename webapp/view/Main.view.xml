@@ -1,8 +1,53 @@
 <mvc:View controllerName="at.clouddna.training00.zhoui5.controller.Main"
     xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" displayBlock="true" xmlns:f="sap.ui.layout.form"
-    xmlns="sap.m">
+    xmlns="sap.m" xmlns:smartTable="sap.ui.comp.smarttable" xmlns:smartFilterBar="sap.ui.comp.smartfilterbar">
     <Page id="page" title="{i18n>title}">
         <content>
+<!-- 
+        <smartFilterBar:SmartFilterBar id="main_smartfilterbar_customers" entitySet="ZHOUI5_CUSTOMERSET">
+
+		</smartFilterBar:SmartFilterBar>
+
+        <smartTable:SmartTable
+            id="main_smarttable_customers"
+            smartFilterId="main_smartfilterbar_customers"
+            entitySet="ZHOUI5_CUSTOMERSET"
+            tableType="ResponsiveTable"
+            useExportToExcel="true"
+            useVariantManagement="false"
+            useTablePersonalisation="true"
+            header="{i18n>main.tabletitle}"
+            showRowCount="true"
+            enableAutoBinding="true"
+            class="sapUiResponsiveContentPadding">
+            <Table>
+                <columns>
+                    <Column>
+                        <customData>
+                            <core:CustomData key="p13nData" value='\{"columnKey": "main_delete_column", "columnIndex": "99"}' />
+                        </customData>
+                        <Text text="{i18n>delete}"/>
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem type="Navigation" press="onListItemPressed">
+                        <cells>
+                            <Button icon="sap-icon://delete" press="onDeleteButtonPressed" type="Reject"/>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+		</smartTable:SmartTable>
+-->
+
+
+        <!-- 
+        <VBox>
+            <Text text="Only Visible At Desktop" visible="{device>/system/desktop}"/>
+            <Text text="Only Visible At Tablet" visible="{device>/system/tablet}"/>
+            <Text text="Only Visible At Phone" visible="{device>/system/phone}"/>
+        </VBox>
+        -->
         <!--
         <Table items="{gendersModel>/flights}" headerText="{i18n>main.tabletitle}" noDataText="{i18n>main.noDataText}">
 
@@ -34,8 +79,16 @@
 
             </Table>
              -->
+
             <Table id="main_table_customers" items="{/CustomerSet}" headerText="{i18n>main.tabletitle}" noDataText="{i18n>main.noDataText}" mode="None"
                 delete="onDeletePressed">
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <Title text="{i18n>main.tabletitle}"/>
+                        <ToolbarSpacer/>
+                        <Button icon="sap-icon://add" type="Accept" text="{i18n>main.addCustomer}" press="onAddCustomer"/>
+                    </OverflowToolbar>
+                </headerToolbar>
                 <columns>
                     <Column>
                         <Text text="{i18n>app.customerid}"/>
@@ -72,7 +125,7 @@
                             <Text text="{Firstname}"/>
                             <Text text="{Lastname}"/>
                             <Text text="{AcademicTitle}"/>
-                            <Text text="{path: 'Gender', formatter: '.genderFormatter'}"/>
+                            <Text text="{path: 'Gender', formatter: '.formatter.genderFormatter'}"/>
                             <Link text="{Email}" href="mailto:{Email}"/>
                             <Text text="{Phone}"/>
                             <Link text="{Website}" href="https://{Website}" target="_blank"/>

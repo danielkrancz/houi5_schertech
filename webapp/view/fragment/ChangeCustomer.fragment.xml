@@ -23,25 +23,25 @@
             -->
 				<Label id="change_label_customerid" text="{i18n>app.customerid}" 
                         labelFor="change_input_customerid"/>
-                <Input id="change_input_customerid" value="{/customerid}"/>
+                <Input id="change_input_customerid" value="{CustomerId}" editable="false"/>
 
                 <Label id="change_label_firstname" text="{i18n>app.firstname}" 
                         labelFor="change_input_firstname"/>
-                <Input id="change_input_firstname" value="{/firstname}"/>
+                <Input id="change_input_firstname" value="{Firstname}"/>
 
                 <Label id="change_label_lastname" text="{i18n>app.lastname}" 
                         labelFor="change_input_lastname"/>
-                <Input id="change_input_lastname" value="{/lastname}"/>
+                <Input id="change_input_lastname" value="{Lastname}"/>
 
                 <Label id="change_label_title" text="{i18n>app.title}" 
                         labelFor="change_input_title"/>
-                <Input id="change_input_title" value="{/title}"/>
+                <Input id="change_input_title" value="{AcademicTitle}"/>
 
                 <Label id="change_label_gender" text="{i18n>app.gender}" 
                         labelFor="change_input_gender"/>
-                <Select id="change_select_gender" selectedKey="{/gender}" items="{gendersModel>/genders}">
+                <Select id="change_select_gender" selectedKey="{Gender}" items="{gendersModel>/genders}">
                     <items>
-                        <core:Item id="change_template_gender_items" key="{gendersModel>}" text="{path: 'gendersModel>', formatter: '.genderFormatter'}"/>
+                        <core:Item id="change_template_gender_items" key="{gendersModel>key}" text="{path: 'gendersModel>text', formatter: '.genderFormatter'}"/>
                     </items>
 				</Select>
                 
@@ -55,15 +55,15 @@
 
                 <Label id="change_label_email" text="{i18n>app.email}" 
                         labelFor="change_input_email"/>
-                <Input id="change_input_email" value="{/email}"/>
+                <Input id="change_input_email" value="{Email}"/>
 
                 <Label id="change_label_phone" text="{i18n>app.phone}" 
                         labelFor="change_input_phone"/>
-                <Input id="change_input_phone" value="{/phone}"/>
+                <Input id="change_input_phone" value="{Phone}"/>
 
                 <Label id="change_label_website" text="{i18n>app.website}" 
                         labelFor="change_input_website"/>
-                <Input id="change_input_website" value="{/website}"/>
+                <Input id="change_input_website" value="{Website}"/>
 			</f:content>
 		</f:SimpleForm>
 </core:FragmentDefinition>

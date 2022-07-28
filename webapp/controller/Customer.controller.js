@@ -1,67 +1,60 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller",
-    "sap/m/MessageBox",
+    "at/clouddna/training00/zhoui5/controller/BaseController",
     "sap/ui/model/json/JSONModel",
     "sap/ui/core/Fragment",
-    "sap/ui/core/routing/History"
+    "at/clouddna/training00/zhoui5/controller/formatter/HOUI5Formatter",
+    "sap/ui/core/Item"
 ],
 
-    function (Controller, MessageBox, JSONModel, Fragment, History) {
+    function (BaseController, JSONModel, Fragment, HOUI5Formatter, Item) {
         "use strict";
 
-        return Controller.extend("at.clouddna.training00.zhoui5.controller.Customer", {
+        return BaseController.extend("at.clouddna.training00.zhoui5.controller.Customer", {
 
             _fragmentList: {},
+            _bCreate: false,
+            formatter: HOUI5Formatter,
 
             onInit: function () {
-                console.log("onInit");
+
+                this.setContentDensity();
+
                 let oEditModel = new JSONModel({
                     editmode: false
                 });
 
                 this.getView().setModel(oEditModel, "editModel");
-
-                this._showCustomerFragment("DisplayCustomer");
-
-                let oRouter = this.getOwnerComponent().getRouter();
                 
-                oRouter.getRoute("RouteCustomer").attachPatternMatched(this._onPatternMatched, this);
-                
-                /*
-                oModel.loadData("data/customers.json");
-
-                oModel.setData({
-                    editmode: false
-                });
-                */
+                this.getRouter().getRoute("RouteCustomer").attachPatternMatched(this._onPatternMatched, this);
+                this.getRouter().getRoute("CreateCustomer").attachPatternMatched(this._onCreatePatternMatched, this);
             },
 
             _onPatternMatched: function(oEvent){
-                let sPath = "/" + oEvent.getParameters().arguments.path;
-                //this.getView().createId(sFragmentName, "display_form_customer")
+                this._bCreate = false;
+
+                let sPath = this.getModel().createKey("/CustomerSet", {
+                    CustomerId: oEvent.getParameters().arguments.path
+                });
+                
                 this.getView().bindElement(sPath);
+                this._showCustomerFragment("DisplayCustomer");
             },
 
-            /*
-            onExit: function() {},
-            onBeforeRendering: function() {},
-            onAfterRendering: function() {},
-            */
+            _onCreatePatternMatched: function(){
+                this._bCreate = true;
 
-            genderFormatter: function(sGender) {
-                let oView = this.getView();
-                let oI18nModel = oView.getModel("i18n");
-                let oResourceBundle = oI18nModel.getResourceBundle();
-                let sText = oResourceBundle.getText(sGender);
-                return sText;
+                let oModel = this.getModel();
+
+                let oContext = oModel.createEntry("/CustomerSet");
+                this.getView().bindElement(oContext.getPath());
+                this._showCustomerFragment("ChangeCustomer");
+                this.getView().getModel("editModel").setProperty("/editmode", true);
             },
 
             _showCustomerFragment: function(sFragmentName){
-                //Clearing the content of the page
                 let oPage = this.getView().byId("page");
                 oPage.removeAllContent();
 
-                //Load the Fragment sFragmentName setting it to the content of the page
                 if(this._fragmentList[sFragmentName]){
                     oPage.insertContent(this._fragmentList[sFragmentName]);
                 }else{
@@ -78,37 +71,27 @@ sap.ui.define([
 
             onEditPressed: function(){
                 this._toggleEdit(true);
-                /*
-                let oEditModel = this.getView().getModel("editModel");
-                oEditModel.setProperty("/editmode", true);
-
-                this._showCustomerFragment("ChangeCustomer");
-                */
             },
 
             onSavePressed: function(){
-                this._toggleEdit(false);
-                /*
-                let oEditModel = this.getView().getModel("editModel");
-                oEditModel.setProperty("/editmode", false);
-
-                this._showCustomerFragment("DisplayCustomer");
-                */
-                /*
                 let oModel = this.getView().getModel();
-                let oData = oModel.getData();
-                MessageBox.success("Customer Data: " + JSON.stringify(oData));
-                */
+                oModel.submitChanges({
+                    success: () => {
+                        if(this._bCreate){
+                            this.onNavBack();
+                        }
+                        this._toggleEdit(false);
+                    }
+                });
             },
 
             onCancelPressed: function(){
+                let oModel = this.getView().getModel();
+                oModel.resetChanges();
+                if(this._bCreate){
+                    this.onNavBack();
+                }
                 this._toggleEdit(false);
-                /*
-                let oEditModel = this.getView().getModel("editModel");
-                oEditModel.setProperty("/editmode", false);
-
-                this._showCustomerFragment("DisplayCustomer");
-                */
             },
 
             _toggleEdit: function(bEditMode) {
@@ -118,16 +101,78 @@ sap.ui.define([
                 this._showCustomerFragment(bEditMode ? "ChangeCustomer" : "DisplayCustomer");
             },
 
-            onNavBack: function () {
-                var oHistory = History.getInstance();
-                var sPreviousHash = oHistory.getPreviousHash();
-    
-                if (sPreviousHash !== undefined) {
-                    window.history.go(-1);
-                } else {
-                    var oRouter = this.getOwnerComponent().getRouter();
-                    oRouter.navTo("Main", {}, true);
+            onOpenAttachments: function(){
+                let oView = this.getView();
+
+                if(!this._pDialog){
+                    this._pDialog = Fragment.load({
+                        id: oView.getId(),
+                        name: "at.clouddna.training00.zhoui5.view.fragment.AttachmentDialog",
+                        controller: this
+                    }).then(function(oDialog){
+                        oView.addDependent(oDialog);
+                        return oDialog;
+                    }.bind(this));
                 }
+
+                this._pDialog.then((oDialog) => {
+                    //Set the upload URL dynamically
+                    let sServiceUrl = this.getView().getModel().sServiceUrl;
+                    let sPath = sServiceUrl + this.getView().getElementBinding().getPath() + "/Documents";
+                    let oUploadSet = this.getView().byId("attachments_uploadset");
+                    oUploadSet.setUploadUrl(sPath);
+
+                    //Open the Dialog
+                    oDialog.open();
+                });
+            },
+
+            onAfterItemAdded: function(oEvent){
+                let oUploadSet = this.getView().byId("attachments_uploadset");
+                let oUploadSetItem = oEvent.getParameters().item;
+
+                oUploadSet.removeAllHeaderFields();
+
+                let oItem = new Item({
+                    key: "x-csrf-token",
+                    text: this.getView().getModel().getSecurityToken()
+                });
+
+                oUploadSet.addHeaderField(oItem);
+
+                oItem = new Item({
+                    key: "slug",
+                    text: oUploadSetItem.getFileName()
+                });
+
+                oUploadSet.addHeaderField(oItem);
+            },
+            
+            onAttachmentsDialogClose: function(){
+                this._pDialog.then((oDialog) => {
+                    oDialog.close();
+                });
+            },
+
+            formatUrl: function(sDocId){
+                // /sap/opu/odata/sap/ZHOUI5_CUSTOMER_SRV/CustomerDocumentSet(guid'b9dc11c0-71cc-1eed-83ca-d903844a462b')/$value
+                let sServiceUrl = this.getModel().sServiceUrl;
+                let sDocPath =  this.getModel().createKey("/CustomerDocumentSet", {
+                    DocId: sDocId
+                });
+
+                return sServiceUrl + sDocPath + "/$value";
+            },
+
+            onRemovePressed: function(oEvent){
+                oEvent.preventDefault();
+
+                let sPath = oEvent.getSource().getBindingContext().getPath();
+                this.getView().getModel().remove(sPath);
+            },
+
+            onUploadCompleted: function(){
+                this.getModel().refresh(true);
             }
 
         });

@@ -1,6 +1,13 @@
 {
     "genders": [
-        "female", "male"
+        {
+            "key": "0",
+            "text": "female"
+        },
+        {
+            "key": "1",
+            "text": "male"
+        }
     ],
 
     "flights": [
